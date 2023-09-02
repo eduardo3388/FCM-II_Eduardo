@@ -1,0 +1,47 @@
+#Vamos extrair o telefone 
+> telefone <- pdf[grepl("Tel:|Telefone:",pdf)]
+> telefone <- gsub("Tel:|Telefone:|[-()]","",telefone)
+> telefone <- gsub("\\s","",telefone)
+> telefone <- gsub("^(\\d{2})","(\\1)",telefone)
+> telefone <- gsub("^(.{9})", "\\1-", telefone)
+> #Agora Vamos extrair o cpf
+> cpf <- pdf[grepl("CPF:|cpf:",pdf)]
+> cpf <- gsub("CPF:|cpf:","",cpf)
+> cpf <- gsub("-|\\.","",cpf)
+> cpf <- trimws(cpf,"both")
+> #Agora realizando a extração da data de nascimento
+> data_nascimento <- pdf[grepl("Data de nascimento:|Dt nasc:", pdf)]
+> data_nascimento <- gsub("Data de nascimento:|Dt nasc:","", data_nascimento)
+> obs_data <- gsub("[0-9-]","",data_nascimento)
+> #Tarefado dia24/08
+> cadastro <- cbind(nome,apelido,data_nascimento, endereco1,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'endereco1' not found
+> cadastro <- cbind(nome,apelido,data_nascimento, endereco1,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'endereco1' not found
+> cadastro <- cbind(nome,apelido,data_nascimento, endereco,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'num_endereco' not found
+> cadastro <- cbind(nome,apelido,data_nascimento, endereço,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'endereço' not found
+> endereco <- pdf[grepl("endereco:|Dt endereco:", pdf)]
+> endereco <- gsub("endereco:|Dt endereco:","", endereco)
+> obs_ender <- gsub("[0-9-]","",endereco)
+> 
+> cadastro <- cbind(nome,apelido,data_nascimento, endereço,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'endereço' not found
+> cadastro <- cbind(nome,apelido,data_nascimento, endereço,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'endereço' not found
+> cadastro <- cbind(nome,apelido,data_nascimento, endereco,num_endereco,bairro, cep,telefone,cpf)
+Error: object 'num_endereco' not found
+> #endereço
+> endereco <- pdf[grepl("endereco:|M endereco:", pdf)]
+> endereco <- gsub("endereco:|M endereco:","", endereco)
+> obs_ender <- gsub("[0-9-]","",endereco)
+> 
+> #Numerode endereçco
+> num_endereco <- pdf[grepl("numero de endereco:|N endereco:", pdf)]
+> num_endereco <- gsub("numero de endereco:|N endereco:","", endereco)
+> obs_ender <- gsub("[0-9-]","",num_endereco)
+> cadastro <- cbind(nome,apelido,data_nascimento, endereco,num_endereco, cep,telefone,cpf)
+> cadastro <- as.data.frame(cadastro)
+> View(cadastro)
+> 
