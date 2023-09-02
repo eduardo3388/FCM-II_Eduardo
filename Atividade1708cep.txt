@@ -1,0 +1,61 @@
+library(tidyverse)
+-- Attaching core tidyverse packages ----------------- tidyverse 2.0.0 --
+? dplyr     1.1.2     ? readr     2.1.4
+? forcats   1.0.0     ? stringr   1.5.0
+? ggplot2   3.4.3     ? tibble    3.2.1
+? lubridate 1.9.2     ? tidyr     1.3.0
+? purrr     1.0.2     
+-- Conflicts ----------------------------------- tidyverse_conflicts() --
+? dplyr::filter() masks stats::filter()
+? dplyr::lag()    masks stats::lag()
+? Use the conflicted package to force all conflicts to become errors
+> library(pdftools)
+Using poppler version 0.86.1
+> 
+> pdf <- pdf_text("cadastro.pdf")
+> pdf <- str_split_1(pdf,"\\n")
+> pdf
+ [1] "Nome: Jon Snow (aka Aegon Targaryen)"                    
+ [2] "Data de nascimento: 12-12-281d.C"                        
+ [3] "Endereço: Rua Winterfell, 42, Westeros."                 
+ [4] "CEP: 32722-000"                                          
+ [5] "Tel: (12) 92134-9999"                                    
+ [6] "cpf: 876.946.333-90"                                     
+ [7] "Nome: Gandalf, O Cinzento (aka Gandalf, O Branco)"       
+ [8] "Dt nasc: 12-12-1000"                                     
+ [9] "Endereço: Rua do Condado, SN, Terra média CEP: 88837-000"
+[10] "Telefone: (84) 977724242"                                
+[11] "CPF: 000.321.333-90"                                     
+[12] "Nome: Paul Atreides (aka Muad'Dib)"                      
+[13] "Data de nascimento: 12/12/10.175d.G."                    
+[14] "Endereço: Sietch Tabr, Arakis"                           
+[15] "CEP: 90079-876"                                          
+[16] "Tel: 84 97772 4242"                                      
+[17] "CPF: 00032133390"                                        
+[18] "nome: Geralt de Rívia (aka O Carniceiro de Blaviken)"    
+[19] "Data de nascimento: 12/dec/1217"                         
+[20] "Endereço: Kaer Morhen, SN, Known"                        
+[21] "CEP: 00.000-000"                                         
+[22] "Tel: 84977724242"                                        
+[23] "CPF: 000000000-00"                                       
+[24] ""                                                        
+> #Vamos extrair os nomes
+> nome <-pdf[grepl("[nN]ome:", pdf)]
+> #Vamos agora utilizar gsub para deletar espaços e parenteses com 0 e outros caracteres que venham a nos prejudicar
+> nome <- gsub("[nN]ome:", "",nome)
+> nome <- gsub("\\(.*\\)", "",nome)
+> nome <- trimws(nome,"both")
+> #Realizando a extração de apelidos
+> apelido <-pdf[grepl("[nN]ome:", pdf)]
+> apelido <- str_extract(apelido, "\\(.*\\)")
+> apelido <- gsub("\\(\\w+ |\\)","",apelido)
+> #Atividade 17 de Agosto
+> #Extrair o cep
+> cep <- pdf[grepl("CEP:", pdf)]
+> cep <- gsub("CEP:", "", cep)
+> #Falta extrair tudo que não for números
+> cep <- gsub("[^0-9-]", "", cep)
+> cep <- trimws(cep, "both")
+> cep
+[1] "32722-000" "88837-000" "90079-876" "00000-000"
+> 
